@@ -1,0 +1,127 @@
+$ellipse1_default_rotate: -14deg
+$ellipse1_default_scale: .8,1
+
+$ellipse2_default_rotate: 40deg
+$ellipse2_default_scale: .8,1
+
+$ellipse3_default_rotate: 32deg
+$ellipse3_default_scale: .8,1
+
+$ellipse_rotate_right: 360deg
+$ellipse_rotate_right_half: 130deg
+$ellipse_rotate_right_quarter: 90deg
+
+$ellipse_rotate_left: -360deg
+$ellipse_rotate_left_half: -130deg
+$ellipse_rotate_left_quarter: -90deg
+
+$main_animation_duration: 30s
+
+.container
+  position: relative
+  width: 100vw
+  height: 100vh
+  overflow: hidden
+  transition: background-color 200ms linear
+  animation: background_animate $main_animation_duration infinite linear
+  background-color: #56B693
+  .text
+    position: absolute
+    color: #FFFFFF
+    text-shadow: 0 0 10px #00000025
+    &.app
+      font-size: 8rem
+      font-weight: 300
+      top: 16rem
+      left: 16rem
+    &.author
+      font-size: 1.6rem
+      bottom: 5rem
+      right: 7rem
+  .backOverlay
+    position: absolute
+    top: 0
+    left: 0
+    background-color: #51505020
+    backdrop-filter: blur(10px)
+    width: 100%
+    height: 100%
+  .ellipse
+    position: absolute
+    transition: height 200ms ease-out, background-color 200ms linear, transform 200ms linear, height 200ms ease-out
+    filter: blur(14rem)
+    border-radius: 50%
+    height: 50rem
+    width: 50rem
+    &.ellipse1
+      right: 1rem
+      top: 0rem
+      transform: rotate($ellipse1_default_rotate) scale($ellipse1_default_scale)
+      background-color: #A1C4E3
+      animation: ellipse1_rotate_animate 22s infinite linear, ellipse1_color_animate $main_animation_duration infinite linear
+    &.ellipse2
+      left: 25%
+      bottom: -24rem
+      transform: rotate($ellipse2_default_rotate)
+      background-color: #BEFFE0
+      animation: ellipse2_rotate_animate 14s infinite linear, ellipse2_color_animate $main_animation_duration infinite linear
+    &.ellipse3
+      left: -1rem
+      top: -8rem
+      transform: rotate($ellipse3_default_rotate)
+      background-color: #FFFFFF
+      animation: ellipse3_rotate_animate 18s infinite linear, ellipse3_color_animate $main_animation_duration infinite linear
+
+/* animations */
+@keyframes background_animate
+  25%
+    background-color: #1A7A8F
+  50%
+    background-color: #EEAC49
+  100%
+    background-color: #56B693
+
+@keyframes ellipse1_rotate_animate
+  25%
+    transform: rotate($ellipse_rotate_right_half) scale(.8,.9)
+  50%
+    transform: rotate($ellipse_rotate_right_half) scale(.9,.96)
+  100%
+    transform: rotate($ellipse_rotate_right + $ellipse1_default_rotate) scale($ellipse1_default_scale)
+@keyframes ellipse1_color_animate
+  25%
+    background-color: #81B2E0
+  50%
+    background-color: #21424254
+  100%
+    background-color: #A1C4E3
+
+@keyframes ellipse2_rotate_animate
+  25%
+    transform: rotate($ellipse_rotate_right_quarter) scale(1.05,.9)
+  50%
+    transform: rotate($ellipse_rotate_right_half) scale(1.1,1.2)
+  100%
+    transform: rotate($ellipse_rotate_right_half + $ellipse2_default_rotate) scale($ellipse2_default_scale)
+@keyframes ellipse2_color_animate
+  25%
+    background-color: #FFBEBE55
+  50%
+    background-color: #E6FFC675
+  100%
+    background-color: #BEFFE0
+
+@keyframes ellipse3_rotate_animate
+  25%
+    transform: rotate($ellipse_rotate_left_quarter) scale(.9,1.07)
+  50%
+    transform: rotate($ellipse_rotate_left_half) scale(1.5,1)
+  100%
+    transform: rotate($ellipse_rotate_left - $ellipse3_default_rotate) scale($ellipse3_default_scale)
+@keyframes ellipse3_color_animate
+  25%
+    background-color: #FFFFFF80
+  50%
+    background-color: #E7D216
+  100%
+    background-color: #FFFFFF

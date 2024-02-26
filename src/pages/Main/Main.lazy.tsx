@@ -1,3 +1,3 @@
-import { lazy } from "react";
+import { FC, lazy } from "react";
 
-export const LazyMain = lazy(() => import("./Main"));
+export const LazyMain: FC = lazy(() => import("./Main"));

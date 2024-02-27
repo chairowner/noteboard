@@ -15,7 +15,7 @@ $ellipse_rotate_left: -360deg
 $ellipse_rotate_left_half: -130deg
 $ellipse_rotate_left_quarter: -90deg
 
-$main_animation_duration: 30s
+$main_animation_duration: 16s
 
 .container
   position: relative
@@ -29,11 +29,16 @@ $main_animation_duration: 30s
     position: absolute
     color: #FFFFFF
     text-shadow: 0 0 10px #00000025
+    white-space: nowrap
     &.app
-      font-size: 8rem
-      font-weight: 300
       top: 16rem
       left: 16rem
+      width: 700px
+      font-weight: 450
+      font-size: 8rem
+      overflow: hidden
+      border-right: 3px solid white
+      animation: text_cursor .75s step-end infinite, text_printing 1s steps(9)
     &.author
       font-size: 1.6rem
       bottom: 5rem
@@ -73,6 +78,17 @@ $main_animation_duration: 30s
       animation: ellipse3_rotate_animate 18s infinite linear, ellipse3_color_animate $main_animation_duration infinite linear
 
 /* animations */
+@keyframes text_cursor
+  0%
+    border-color: white
+  50%
+    border-color: transparent
+  100%
+    border-color: white
+@keyframes text_printing
+  0%
+    width: 0
+
 @keyframes background_animate
   25%
     background-color: #1A7A8F

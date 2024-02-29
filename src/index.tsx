@@ -2,9 +2,10 @@ import { StrictMode, Suspense } from "react";
 import { Root, createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { App } from "./components/App/App";
-import { Main } from "./pages/Main";
-import { Welcome } from "./components/Welcome/Welcome";
+import { MainPage } from "./pages/MainPage";
+import { WelcomePage } from "./pages/WelcomePage/WelcomePage";
 import "./index.sass";
+import { LoadingPage } from "./pages/LoadingPage/LoadingPage";
 
 const root: HTMLElement = document.getElementById("root");
 
@@ -22,8 +23,8 @@ const router = createBrowserRouter([
 			{
 				index: true,
 				element: (
-					<Suspense fallback={<b>"Loading..."</b>}>
-						<Main />
+					<Suspense fallback={<LoadingPage />}>
+						<MainPage />
 					</Suspense>
 				),
 			},
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
 
 container.render(
 	<StrictMode>
-		<Welcome />
-		{/* <RouterProvider router={router} /> */}
+		{/* <WelcomePage /> */}
+		<RouterProvider router={router} />
 	</StrictMode>
 );

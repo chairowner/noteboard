@@ -4,12 +4,10 @@ import { Link, Outlet } from "react-router-dom";
 export const App: FC = () => {
 	return (
 		<>
-			<header>
+			{/* <header>
 				<Link to={"/"}>Main</Link>
-			</header>
-			<div>
-				<Outlet />
-			</div>
+			</header> */}
+			<Outlet />
 		</>
 	);
 };

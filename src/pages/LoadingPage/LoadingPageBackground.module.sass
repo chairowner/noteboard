@@ -25,24 +25,10 @@ $main_animation_duration: 16s
   transition: background-color 200ms linear
   animation: background_animate $main_animation_duration infinite linear
   background-color: #56B693
-  .text
-    position: absolute
-    color: #FFFFFF
-    text-shadow: 0 0 10px #00000025
-    white-space: nowrap
-    &.app
-      top: 16rem
-      left: 16rem
-      width: 700px
-      font-weight: 450
-      font-size: 8rem
-      overflow: hidden
-      border-right: 3px solid white
-      animation: text_cursor .75s step-end infinite, text_printing 1s steps(9)
-    &.author
-      font-size: 1.6rem
-      bottom: 5rem
-      right: 7rem
+  &.centered
+    display: flex
+    justify-content: center
+    align-items: center
   .backOverlay
     position: absolute
     top: 0
@@ -78,17 +64,6 @@ $main_animation_duration: 16s
       animation: ellipse3_rotate_animate 18s infinite linear, ellipse3_color_animate $main_animation_duration infinite linear
 
 /* animations */
-@keyframes text_cursor
-  0%
-    border-color: white
-  50%
-    border-color: transparent
-  100%
-    border-color: white
-@keyframes text_printing
-  0%
-    width: 0
-
 @keyframes background_animate
   25%
     background-color: #1A7A8F

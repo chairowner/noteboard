@@ -1,0 +1,35 @@
+.text
+  position: absolute
+  color: #FFFFFF
+  text-shadow: 0 0 10px #00000025
+  white-space: nowrap
+  &.app
+    top: 16rem
+    left: 16rem
+    width: 700px
+    font-weight: 450
+    font-size: 8rem
+    overflow: hidden
+    border-right: 3px solid white
+    animation: text_cursor 750ms step-end infinite, text_printing 1s steps(9)
+  &.author
+    font-size: 1.6rem
+    bottom: 5rem
+    right: 7rem
+    animation: text_showing 800ms ease-in
+
+/* animations */
+@keyframes text_cursor
+  0%
+    border-color: white
+  50%
+    border-color: transparent
+  100%
+    border-color: white
+@keyframes text_printing
+  0%
+    width: 0
+
+@keyframes text_showing
+  0%
+    opacity: 0

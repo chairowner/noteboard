@@ -5,7 +5,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
-import CopyPlugin from "copy-webpack-plugin";
+// import CopyPlugin from "copy-webpack-plugin";
 import path from "path";
 
 export function buildPlugins({
@@ -41,16 +41,16 @@ export function buildPlugins({
 				chunkFilename: "css/[name].[contenthash].css",
 			})
 		);
-		plugins.push(
-			new CopyPlugin({
-				patterns: [
-					{
-						from: path.resolve(paths.public, "manifest.webmanifest"),
-						to: path.resolve(paths.output, "manifest.webmanifest"),
-					},
-				],
-			})
-		);
+		// plugins.push(
+		// 	new CopyPlugin({
+		// 		patterns: [
+		// 			{
+		// 				from: path.resolve(paths.public, "manifest.webmanifest"),
+		// 				to: path.resolve(paths.output, "manifest.webmanifest"),
+		// 			},
+		// 		],
+		// 	})
+		// );
 	}
 
 	if (bundleAnalyze) {

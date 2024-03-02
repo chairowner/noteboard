@@ -1,6 +1,6 @@
 import { FC } from "react";
-import s_lb from "./LoadingPageBackground.module.sass";
-import s_l from "./LoadingPage.module.sass";
+import s_lb from "./LoadingPageBackground.module.scss";
+import s_l from "./LoadingPage.module.scss";
 import classNames from "classnames";
 
 export const LoadingPage: FC = () => {

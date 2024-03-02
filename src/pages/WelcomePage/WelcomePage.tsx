@@ -1,6 +1,6 @@
 import { FC } from "react";
-import s_loading from "../LoadingPage/LoadingPageBackground.module.sass";
-import s_welcome from "./WelcomePage.module.sass";
+import s_loading from "../LoadingPage/LoadingPageBackground.module.scss";
+import s_welcome from "./WelcomePage.module.scss";
 import classNames from "classnames";
 
 const appName: string = "Noteboard";

@@ -10,7 +10,7 @@ const typeNoteObject: TypeNote = {
 	create_date: new Date(),
 };
 
-export const BlockPanel: FC = () => {
+export const FreeMindMap: FC = () => {
 	const [notes, setNotes] = useState<TypeNote[]>([typeNoteObject]);
 
 	useEffect(() => {

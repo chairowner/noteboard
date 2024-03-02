@@ -4,7 +4,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { App } from "./components/App/App";
 import { MainPage } from "./pages/MainPage";
 import { WelcomePage } from "./pages/WelcomePage/WelcomePage";
-import "./index.sass";
+import "./styles/normalize.scss";
+import "./index.scss";
 import { LoadingPage } from "./pages/LoadingPage/LoadingPage";
 
 const root: HTMLElement = document.getElementById("root");

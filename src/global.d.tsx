@@ -1,4 +1,4 @@
-declare module "*.module.sass" {
+declare module "*.module.scss" {
 	interface IClassNames {
 		[className: string]: string;
 	}
@@ -9,7 +9,7 @@ declare module "*.png";
 declare module "*.jpg";
 declare module "*.jpeg";
 declare module "*.svg" {
-	import { VFC, SVGProps } from "react";
-	const SVG: VFC<SVGProps<SVGSVGElement>>;
+	import { /* VFC, */ FC, SVGProps } from "react";
+	const SVG: /* VFC */ FC<SVGProps<SVGSVGElement>>;
 	export default SVG;
 }

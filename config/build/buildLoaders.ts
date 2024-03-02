@@ -6,7 +6,7 @@ import { buildBabelLoader } from "./babel/buildBabelLoader";
 export function buildLoaders({ mode }: BuildOptions): ModuleOptions["rules"] {
 	const isProd = mode === "production";
 
-	const scssModuleLoader = {
+	const cssModuleLoader = {
 		loader: "css-loader",
 		options: {
 			modules: {
@@ -19,7 +19,7 @@ export function buildLoaders({ mode }: BuildOptions): ModuleOptions["rules"] {
 		test: /\.s[ac]ss$/i,
 		use: [
 			isProd ? MiniCssExtractPlugin.loader : "style-loader",
-			scssModuleLoader,
+			cssModuleLoader,
 			"sass-loader",
 		],
 	};

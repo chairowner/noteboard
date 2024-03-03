@@ -1,0 +1,107 @@
+@import "@/styles/theme.scss";
+
+$main_padding_y: 8px;
+$main_padding_x: 10px;
+$main_list_item_height: 34px;
+
+.list {
+	display: flex;
+	flex-direction: column;
+}
+
+.hidden {
+	display: none;
+}
+
+.container {
+	cursor: default;
+	height: 100vh;
+	width: 240px;
+	padding: 10px;
+	background-color: $main_color50;
+	font-size: 14px;
+	color: $accent_color;
+	gap: 20px;
+
+	.pagesBlock {
+		gap: 20px;
+
+		.title {
+			margin: 0 $main_padding_x;
+		}
+	}
+
+	.button {
+		cursor: pointer;
+		border: none;
+		outline: none;
+		color: white;
+		background-color: $accent_color;
+		padding: $main_padding_y $main_padding_x;
+		margin: 0 $main_padding_x;
+		border-radius: $main_border_radius;
+	}
+
+	.list {
+		&.pages {
+			gap: 4px;
+			&:not(.firstItem) {
+				// margin-block-start: 1em;
+				// margin-block-end: 1em;
+				// margin-inline-start: 0px;
+				// margin-inline-end: 0px;
+				padding-inline-start: 10px;
+			}
+		}
+
+		.item {
+			cursor: pointer;
+			padding: $main_padding_y $main_padding_x;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 10px;
+			color: $accent_color;
+			background: transparent;
+			transition: background-color 100ms ease-in;
+			border-radius: $main_border_radius;
+
+			&:active,
+			&:hover,
+			&:focus,
+			&.selected {
+				background-color: $add_color;
+			}
+
+			.rightArrow__wrapper {
+				position: relative;
+				z-index: 1;
+				width: 18px;
+				height: 18px;
+				padding: 4px;
+				transition: background-color 100ms ease-in;
+				border-radius: $main_border_radius;
+
+				&:active,
+				&:hover,
+				&:focus {
+					background-color: $accent_color50;
+				}
+
+				.rightArrow {
+					position: absolute;
+					display: block;
+					width: 8px;
+					height: 8px;
+					border-right: 2px $accent_color solid;
+					border-bottom: 2px $accent_color solid;
+					transform: rotate(-45deg);
+					transition: transform 100ms ease-in;
+					&.opened {
+						transform: rotate(45deg);
+					}
+				}
+			}
+		}
+	}
+}

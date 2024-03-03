@@ -1,69 +1,81 @@
-import { FreeMindMap } from "@/components/MainScreen/FreeMindMap/FreeMindMap";
-import { LineNote } from "@/components/MainScreen/LineNote/LineNote";
-import { MainMenu } from "@/components/MainScreen/Menu/MainMenu";
-import { TypeMainMenuItem } from "@/types/TypeMainMenuItem";
-import { TypeNoteType } from "@/types/TypeNoteType";
+import { MainMenu } from "@/components/MainMenu/MainMenu";
+import { TypePageShort } from "@/types/TypePageShort";
 import { FC, useEffect, useState } from "react";
+import { v4 } from "uuid";
 
-interface INoteType {
-	id: TypeNoteType;
-	title: string;
-}
-
-const noteTypeList: INoteType[] = [
-	{ id: TypeNoteType.LineNote, title: "LineNote" },
-	{ id: TypeNoteType.FreeMindMap, title: "FreeMindMap" },
-];
-
-const MI_ADD_GROUP: string = "addGroup";
-const MI_ADD_NOTE: string = "addNote";
-const MI_CHANGE_MODE: string = "changeMode";
-const MI_SHOW_PARAMS: string = "showParameters";
-
-const defaultMenuItems: TypeMainMenuItem[] = [
-	{ command: MI_ADD_GROUP, title: "Добавить группу", hidden: true },
-	{ command: MI_ADD_NOTE, title: "Добавить заметку", hidden: false },
-	{ command: MI_CHANGE_MODE, title: "Сменить режим", hidden: false },
-	{ command: MI_SHOW_PARAMS, title: "Параметры", hidden: false },
+const _debugPagesList: TypePageShort[] = [
+	{
+		id: v4(),
+		icon: "G",
+		title: "first",
+		opened: false,
+	},
+	{
+		id: v4(),
+		title: "second",
+		opened: false,
+		pages: [
+			{
+				id: v4(),
+				title: "second-first",
+				opened: false,
+			},
+		],
+	},
+	{
+		id: v4(),
+		title: "third",
+		opened: false,
+	},
 ];
 
 const MainPage: FC = () => {
-	const [noteType, setNoteType] = useState<TypeNoteType>(TypeNoteType.LineNote);
-	const [menuTitle, setMenuTitle] = useState<string>("Выбранная позиция");
-	const [menuItems, setMenuItems] = useState<TypeMainMenuItem[]>([]);
+	const [pages, setPages] = useState<TypePageShort[]>([]);
+	const [selectedPage, setSelectedPage] = useState<string | null>(null);
 
 	useEffect(() => {
-		setMenuItems(defaultMenuItems);
+		setPages(_debugPagesList);
 	}, []);
 
-	let componentToRender: JSX.Element | null = null;
+	const selectPage = (pageId: string | null): void => {
+		if (pageId === selectedPage) return;
+		setSelectedPage(pageId);
+	};
 
-	switch (noteType) {
-		case TypeNoteType.LineNote:
-			componentToRender = <LineNote />;
-			break;
-		case TypeNoteType.FreeMindMap:
-			componentToRender = <FreeMindMap />;
-			break;
-	}
+	const toggleOpenPagesRecursively = (
+		pages: TypePageShort[],
+		pageId: string
+	): TypePageShort[] => {
+		return pages.map((page) => {
+			if (page.id === pageId) {
+				return { ...page, opened: !page.opened };
+			}
 
-	const changeNoteType = (): void => {
-		const newType: TypeNoteType =
-			noteType === TypeNoteType.LineNote
-				? TypeNoteType.FreeMindMap
-				: TypeNoteType.LineNote;
-		setNoteType(newType);
+			if (page && page?.pages && page?.pages?.length > 0) {
+				return {
+					...page,
+					pages: toggleOpenPagesRecursively(page?.pages, pageId),
+				};
+			}
+
+			return page;
+		});
+	};
+
+	const togglePageList = (pageId: string): void => {
+		setPages((pages) => toggleOpenPagesRecursively(pages, pageId));
+	};
+
+	const mainMenuProps = {
+		selectedPage,
+		selectPage,
+		togglePageList,
+		pages,
 	};
 
 	return (
 		<div style={{ position: "relative" }}>
-			<MainMenu
-				items={menuItems}
-				title={menuTitle}
-				noteType={noteType}
-				changeNoteType={changeNoteType}
-			/>
-			{componentToRender}
+			<MainMenu {...mainMenuProps} />
 		</div>
 	);
 };

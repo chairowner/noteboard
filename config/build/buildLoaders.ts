@@ -52,5 +52,10 @@ export function buildLoaders({ mode }: BuildOptions): ModuleOptions["rules"] {
 		],
 	};
 
-	return [svgrLoader, assetLoader, scssLoader, babelLoader];
+	const txtLoader = {
+		test: /\.(txt|md)$/i,
+		use: "raw-loader",
+	};
+
+	return [txtLoader, svgrLoader, assetLoader, scssLoader, babelLoader];
 }

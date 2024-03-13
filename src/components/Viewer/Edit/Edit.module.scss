@@ -1,0 +1,27 @@
+.container {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+
+	.item {
+		height: 100%;
+		width: 50%;
+		padding: 1rem;
+		border: 1px black solid;
+		overflow-y: auto;
+
+		&:is(textarea) {
+			border-right: none;
+			outline: none;
+			resize: none;
+		}
+
+		&:first-child {
+			border-radius: 1rem 0 0 1rem;
+		}
+
+		&:last-child {
+			border-radius: 0 1rem 1rem 0;
+		}
+	}
+}

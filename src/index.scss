@@ -9,3 +9,9 @@
 body {
 	font-family: "Noto Sans Mono", monospace;
 }
+
+ul,
+ol {
+	/* Помещаем маркеры внутрь блока */
+	list-style-position: inside;
+}

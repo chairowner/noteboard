@@ -1,22 +1,10 @@
-import { TypePageShort } from "@/types/TypePageShort";
-import { FC } from "react";
+import { TypePage } from "@/types/TypePage";
+import { FC, MouseEvent } from "react";
 import s from "./MainMenu.module.scss";
 import cns from "classnames";
 import classNames from "classnames";
-
-interface IMainMenu {
-	user?: string;
-	selectedPage?: string;
-	pages: TypePageShort[];
-	selectPage(pageId: string): void;
-	togglePageList(pageId: string): void;
-}
-
-type TypeMainMenuInfoItem = {
-	id: number;
-	icon?: string;
-	title: string;
-};
+import { TypeMainMenuInfoItem } from "@/types/TypeMainMenuInfoItem";
+import { IMainMenu } from "@/interfaces/IMainMenu";
 
 const mainMenuInfoList: TypeMainMenuInfoItem[] = [
 	{
@@ -53,11 +41,20 @@ export const MainMenu: FC<IMainMenu> = ({
 	}
 
 	if (typeof pages !== "undefined" && pages.length > 0) {
-		const getPages = (pages: TypePageShort[]): JSX.Element => {
+		const onClickRightArrowHandler = (
+			e: MouseEvent<HTMLElement>,
+			id: string
+		) => {
+			e.stopPropagation();
+			togglePageList(id);
+		};
+
+		const getPages = (pages: TypePage[]): JSX.Element => {
 			return (
 				<>
 					{pages.map((item) => {
-						const selected: boolean = item.id === selectedPage;
+						const selected: boolean =
+							selectedPage && item.id === selectedPage?.id;
 
 						let insidePagesItemClasses = [s.list, s.pages];
 						let itemClasses = [s.item];
@@ -81,7 +78,9 @@ export const MainMenu: FC<IMainMenu> = ({
 								>
 									<div
 										className={s.rightArrow__wrapper}
-										onClick={() => togglePageList(item.id)}
+										onClick={(e: MouseEvent<HTMLElement>) =>
+											onClickRightArrowHandler(e, item.id)
+										}
 									>
 										<b className={cns(rightArrowClasses)}></b>
 									</div>
@@ -128,6 +127,7 @@ export const MainMenu: FC<IMainMenu> = ({
 	);
 
 	render = (
+		// <div className={cns(s.container, s.list)} style={style ? style : null}>
 		<div className={cns(s.container, s.list)}>
 			{render_userBlock}
 			{render_infoBlock}

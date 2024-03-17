@@ -1,5 +1,5 @@
 import { IViewer } from "@/interfaces/IViewer";
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useEffect } from "react";
 import s from "./View.module.scss";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -15,9 +15,46 @@ const CodeComponent = (value: string, language: string): ReactElement => {
 	);
 };
 
-export const View: FC<IViewerView> = ({ page, className, onScroll }) => {
+export const View: FC<IViewerView> = ({
+	page,
+	className,
+	onScroll,
+	removeUseEffect,
+	editMode,
+	toggleEditMode,
+}) => {
 	if (!page) {
 		return null;
+	}
+
+	if (!removeUseEffect) {
+		const turnOnEditMode = (): void => {
+			if (editMode) {
+				return;
+			}
+			toggleEditMode();
+		};
+
+		useEffect(() => {
+			const keyPressEventListenerName = "keydown";
+
+			const onKeyPress = (e: KeyboardEvent) => {
+				if (e.ctrlKey) {
+					e.preventDefault();
+					if (["KeyS", "KeyE"].includes(e.code)) {
+						if (e.code === "KeyE") {
+							turnOnEditMode();
+						}
+					}
+				}
+			};
+
+			document.addEventListener(keyPressEventListenerName, onKeyPress);
+
+			return () => {
+				document.removeEventListener(keyPressEventListenerName, onKeyPress);
+			};
+		}, []);
 	}
 
 	return (

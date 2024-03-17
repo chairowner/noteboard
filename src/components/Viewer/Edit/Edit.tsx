@@ -5,21 +5,29 @@ import s from "./Edit.module.scss";
 import { TypePage } from "@/types/TypePage";
 import { IViewerView } from "@/interfaces/IViewerView";
 
-export const Edit: FC<IViewer> = ({ page, editMode }) => {
+interface IEdit extends IViewer {
+	changeEditBody(body: string): void;
+	onSaveHandler(): void;
+}
+
+export const Edit: FC<IEdit> = ({
+	page,
+	editMode,
+	changeEditBody,
+	onSaveHandler,
+	toggleEditMode,
+}) => {
 	if (!page) {
 		return null;
 	}
 
 	const [editPage, setEditPage] = useState<TypePage>(null);
 
-	useEffect(() => {
-		setEditPage(page);
-	}, [page]);
-
 	const onChangeTextarea = (body: string): void => {
 		setEditPage((page) => {
 			return { ...page, body };
 		});
+		changeEditBody(body);
 	};
 
 	const onScroll = (e: EventTarget): void => {
@@ -33,6 +41,42 @@ export const Edit: FC<IViewer> = ({ page, editMode }) => {
 		editMode,
 	};
 
+	const turnOffEditMode = (): void => {
+		if (!editMode) {
+			return;
+		}
+		toggleEditMode();
+	};
+
+	useEffect(() => {
+		setEditPage(page);
+		changeEditBody(page.body);
+	}, [page]);
+
+	useEffect(() => {
+		const keyPressEventListenerName = "keydown";
+
+		const onKeyPress = (e: KeyboardEvent) => {
+			if (e.ctrlKey) {
+				if (["KeyS", "KeyE", "KeyQ"].includes(e.code)) {
+					e.preventDefault();
+					if (e.code === "KeyS") {
+						onSaveHandler();
+					}
+					if (e.code === "KeyQ") {
+						turnOffEditMode();
+					}
+				}
+			}
+		};
+
+		document.addEventListener(keyPressEventListenerName, onKeyPress);
+
+		return () => {
+			document.removeEventListener(keyPressEventListenerName, onKeyPress);
+		};
+	}, []);
+
 	return (
 		<div className={s.container}>
 			<textarea
@@ -41,7 +85,7 @@ export const Edit: FC<IViewer> = ({ page, editMode }) => {
 				onScroll={(e) => onScroll(e.target)}
 				onChange={(e) => onChangeTextarea(e.target.value)}
 			/>
-			<View {...viewProps} />
+			<View {...viewProps} removeUseEffect={true} />
 		</div>
 	);
 };

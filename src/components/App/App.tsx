@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { FC, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 
 export const App: FC = () => {
 	return (

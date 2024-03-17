@@ -77,6 +77,25 @@ const findPageRecursively = (pages: TypePage[], pageId: string): TypePage => {
 	return null;
 };
 
+const updatePageBodyRecursively = (
+	pages: TypePage[],
+	pageId: string,
+	body: string
+): TypePage[] => {
+	return pages.map((page) => {
+		if (page.id === pageId) {
+			return { ...page, body };
+		}
+		if (page?.pages && page?.pages?.length > 0) {
+			return {
+				...page,
+				pages: updatePageBodyRecursively(page?.pages, pageId, body),
+			};
+		}
+		return page;
+	});
+};
+
 const MainPage: FC = () => {
 	const [pages, setPages] = useState<TypePage[]>([]);
 	const [selectedPage, setSelectedPage] = useState<TypePage>(null);
@@ -94,6 +113,20 @@ const MainPage: FC = () => {
 		setPages((pages) => toggleOpenPagesRecursively(pages, pageId));
 	};
 
+	const toggleEditMode = (): void => {
+		setEditMode((editMode) => !editMode);
+	};
+
+	const savePageBody = (body: string): void => {
+		if (!selectedPage) {
+			return;
+		}
+		setPages((pages) =>
+			updatePageBodyRecursively(pages, selectedPage.id, body)
+		);
+		toggleEditMode();
+	};
+
 	const mainMenuProps: IMainMenu = {
 		selectedPage,
 		selectPage,
@@ -102,6 +135,9 @@ const MainPage: FC = () => {
 	};
 
 	const viewerProps: IViewer = {
+		toggleEditMode,
+		savePageBody,
+		selectPage,
 		page: selectedPage,
 		editMode,
 	};
@@ -109,6 +145,10 @@ const MainPage: FC = () => {
 	useEffect(() => {
 		setPages(_debugPagesList);
 	}, []);
+
+	useEffect(() => {
+		viewerProps.page = selectedPage;
+	}, [selectedPage]);
 
 	return (
 		<div className={s.container}>

@@ -1,0 +1,24 @@
+.container {
+	.control {
+		cursor: pointer;
+		color: var(--accent);
+		background-color: var(--primary);
+		border: var(--accent);
+	}
+	.singleValue {
+		color: var(--accent);
+	}
+	.menu {
+		color: var(--accent);
+		background-color: var(--primary);
+	}
+	.focusedOption {
+		cursor: pointer;
+		color: var(--primary);
+		background-color: var(--accent);
+	}
+	.selectedOption {
+		color: var(--accent);
+		background-color: var(--secondary);
+	}
+}

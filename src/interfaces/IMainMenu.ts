@@ -7,4 +7,5 @@ export interface IMainMenu {
 	pages: TypePage[];
 	selectPage(pageId: string): void;
 	togglePageList(pageId: string): void;
+	toggleGlobalSettings?(): void;
 }

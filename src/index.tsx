@@ -7,6 +7,7 @@ import { WelcomePage } from "./pages/WelcomePage/WelcomePage";
 import "./styles/normalize.scss";
 import "./index.scss";
 import { LoadingPage } from "./pages/LoadingPage/LoadingPage";
+import { ThemeProvider } from "./contexts/Theme/Theme.context";
 
 const root: HTMLElement = document.getElementById("root");
 
@@ -43,7 +44,9 @@ const router = createBrowserRouter([
 
 container.render(
 	<StrictMode>
-		{/* <WelcomePage /> */}
-		<RouterProvider router={router} />
+		<ThemeProvider>
+			{/* <WelcomePage /> */}
+			<RouterProvider router={router} />
+		</ThemeProvider>
 	</StrictMode>
 );

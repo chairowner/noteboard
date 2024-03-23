@@ -7,6 +7,7 @@ import { Button } from "../Button/Button";
 
 export const Viewer: FC<IViewer> = (props) => {
 	const [render, setRender] = useState<JSX.Element>(null);
+
 	let editBody: string = null;
 
 	const onSaveHandler = (): void => {

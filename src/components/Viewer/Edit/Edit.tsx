@@ -54,11 +54,11 @@ export const Edit: FC<IEdit> = ({
 	}, [page]);
 
 	useEffect(() => {
-		const keyPressEventListenerName = "keydown";
+		const keyPressEventListenerName: string = "keydown";
 
 		const onKeyPress = (e: KeyboardEvent) => {
 			if (e.ctrlKey) {
-				if (["KeyS", "KeyE", "KeyQ"].includes(e.code)) {
+				if (["KeyS", "KeyE", "KeyQ", "KeyW"].includes(e.code)) {
 					e.preventDefault();
 					if (e.code === "KeyS") {
 						onSaveHandler();

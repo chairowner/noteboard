@@ -9,6 +9,8 @@
 		padding: 1rem;
 		border: 1px black solid;
 		overflow-y: auto;
+		background-color: var(--light_background);
+		color: var(--accent);
 
 		&:is(textarea) {
 			border-right: none;

@@ -1,4 +1,3 @@
-import { IViewer } from "@/interfaces/IViewer";
 import { FC, ReactElement, useEffect } from "react";
 import s from "./View.module.scss";
 import Markdown from "react-markdown";
@@ -41,7 +40,7 @@ export const View: FC<IViewerView> = ({
 			const onKeyPress = (e: KeyboardEvent) => {
 				if (e.ctrlKey) {
 					e.preventDefault();
-					if (["KeyS", "KeyE"].includes(e.code)) {
+					if (["KeyS", "KeyE", "KeyW"].includes(e.code)) {
 						if (e.code === "KeyE") {
 							turnOnEditMode();
 						}

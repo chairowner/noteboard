@@ -6,6 +6,7 @@ import s from "./MainPage.module.scss";
 import { Viewer } from "@/components/Viewer/Viewer";
 import { IMainMenu } from "@/interfaces/IMainMenu";
 import { IViewer } from "@/interfaces/IViewer";
+import { SettingsModalWindow } from "@/components/ModalWindow/SettingsModalWindow/SettingsModalWindow";
 
 const _debugPagesList: TypePage[] = [
 	{
@@ -100,6 +101,7 @@ const MainPage: FC = () => {
 	const [pages, setPages] = useState<TypePage[]>([]);
 	const [selectedPage, setSelectedPage] = useState<TypePage>(null);
 	const [editMode, setEditMode] = useState<boolean>(false);
+	const [showGlobalSettings, setShowGlobalSettings] = useState<boolean>(false);
 
 	const selectPage = (pageId: string | null): void => {
 		if (!pageId) {
@@ -127,6 +129,10 @@ const MainPage: FC = () => {
 		toggleEditMode();
 	};
 
+	const toggleGlobalSettings = (): void => {
+		setShowGlobalSettings((show) => !show);
+	};
+
 	const mainMenuProps: IMainMenu = {
 		selectedPage,
 		selectPage,
@@ -152,8 +158,17 @@ const MainPage: FC = () => {
 
 	return (
 		<div className={s.container}>
-			<MainMenu {...mainMenuProps} />
+			<MainMenu
+				{...mainMenuProps}
+				toggleGlobalSettings={toggleGlobalSettings}
+			/>
 			<Viewer {...viewerProps} />
+
+			{showGlobalSettings ? (
+				<SettingsModalWindow
+					closeModalWindow={toggleGlobalSettings}
+				></SettingsModalWindow>
+			) : null}
 		</div>
 	);
 };

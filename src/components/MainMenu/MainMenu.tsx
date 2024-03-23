@@ -6,30 +6,32 @@ import classNames from "classnames";
 import { TypeMainMenuInfoItem } from "@/types/TypeMainMenuInfoItem";
 import { IMainMenu } from "@/interfaces/IMainMenu";
 
-const mainMenuInfoList: TypeMainMenuInfoItem[] = [
-	{
-		id: 0,
-		title: "Параметры",
-	},
-	{
-		id: 1,
-		icon: "[+]",
-		title: "Новая страница",
-	},
-];
-
 export const MainMenu: FC<IMainMenu> = ({
 	user,
 	pages,
 	selectedPage,
 	selectPage,
 	togglePageList,
+	toggleGlobalSettings,
 }) => {
 	let render: JSX.Element = null;
 	let render_userBlock: JSX.Element = null;
 	let render_pages: JSX.Element = null;
 	let render_pagesBlock: JSX.Element = null;
 	let render_infoBlock: JSX.Element = null;
+
+	const mainMenuInfoList: TypeMainMenuInfoItem[] = [
+		{
+			id: 0,
+			onClick: toggleGlobalSettings,
+			title: "Параметры",
+		},
+		{
+			id: 1,
+			icon: "[+]",
+			title: "Новая страница",
+		},
+	];
 
 	if (typeof user !== "undefined") {
 		render_userBlock = (
@@ -118,7 +120,7 @@ export const MainMenu: FC<IMainMenu> = ({
 	render_infoBlock = (
 		<div className={s.list}>
 			{mainMenuInfoList.map((item) => (
-				<div key={item.id} className={s.item}>
+				<div key={item.id} className={s.item} onClick={item?.onClick || null}>
 					{item?.icon ? <div>{item?.icon}</div> : null}
 					<div>{item.title}</div>
 				</div>

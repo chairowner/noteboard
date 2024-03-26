@@ -8,39 +8,7 @@ import { IMainMenu } from "@/interfaces/IMainMenu";
 import { IViewer } from "@/interfaces/IViewer";
 import { SettingsModalWindow } from "@/components/ModalWindow/SettingsModalWindow/SettingsModalWindow";
 
-const _debugPagesList: TypePage[] = [
-	{
-		id: v4(),
-		create_date: new Date(),
-		icon: "G",
-		title: "first",
-		body: "- [ ] Hello!",
-		opened: false,
-	},
-	{
-		id: v4(),
-		create_date: new Date(),
-		title: "second",
-		body: "# fdsfsdf",
-		opened: false,
-		pages: [
-			{
-				id: v4(),
-				create_date: new Date(),
-				title: "second-first",
-				body: "# Marked in Node.js\n\nRendered by **marked**.",
-				opened: false,
-			},
-		],
-	},
-	{
-		id: v4(),
-		create_date: new Date(),
-		title: "third",
-		body: "",
-		opened: false,
-	},
-];
+const localStoragePagesKey = "pages";
 
 const toggleOpenPagesRecursively = (
 	pages: TypePage[],
@@ -81,34 +49,93 @@ const findPageRecursively = (pages: TypePage[], pageId: string): TypePage => {
 const updatePageBodyRecursively = (
 	pages: TypePage[],
 	pageId: string,
-	body: string
+	body: string,
+	title: string
 ): TypePage[] => {
 	return pages.map((page) => {
 		if (page.id === pageId) {
-			return { ...page, body };
+			return { ...page, body, title };
 		}
 		if (page?.pages && page?.pages?.length > 0) {
 			return {
 				...page,
-				pages: updatePageBodyRecursively(page?.pages, pageId, body),
+				pages: updatePageBodyRecursively(page?.pages, pageId, body, title),
 			};
 		}
-		return page;
+		return { ...page };
 	});
 };
 
+const createNewPageRecursively = (
+	pages: TypePage[],
+	newPage: TypePage,
+	selectedPageId: string | null
+): TypePage[] => {
+	if (!selectedPageId) {
+		return [newPage, ...pages];
+	}
+	return pages.map((page) => {
+		if (page.id === selectedPageId) {
+			return {
+				...page,
+				pages:
+					page?.pages && page?.pages?.length > 0
+						? [newPage, ...page.pages]
+						: [newPage],
+			};
+		}
+		if (page?.pages && page?.pages?.length > 0) {
+			return {
+				...page,
+				pages: createNewPageRecursively(page.pages, newPage, selectedPageId),
+			};
+		}
+		return { ...page };
+	});
+};
+
+const deletePageRecursively = (
+	pages: TypePage[],
+	selectedPageId: string | null
+): TypePage[] => {
+	if (!selectedPageId) return pages;
+	return pages.filter((page) => {
+		if (page.id === selectedPageId) {
+			return false;
+		} else {
+			if (page?.pages && page?.pages?.length > 0) {
+				page.pages = deletePageRecursively(page.pages, selectedPageId);
+			}
+			return true;
+		}
+	});
+};
+
+const getPagesFromLocalStorage = (): TypePage[] => {
+	try {
+		return JSON.parse(localStorage.getItem(localStoragePagesKey)) || [];
+	} catch (error) {
+		console.error("getPagesFromLocalStorage", error);
+		return [];
+	}
+};
+
+const setPagesToLocalStorage = (pages: TypePage[]): void => {
+	try {
+		localStorage.setItem(localStoragePagesKey, JSON.stringify(pages));
+	} catch (error) {
+		console.error("setPagesToLocalStorage", error);
+	}
+};
+
 const MainPage: FC = () => {
-	const [pages, setPages] = useState<TypePage[]>([]);
+	const [pages, setPages] = useState<TypePage[]>(getPagesFromLocalStorage());
 	const [selectedPage, setSelectedPage] = useState<TypePage>(null);
 	const [editMode, setEditMode] = useState<boolean>(false);
 	const [showGlobalSettings, setShowGlobalSettings] = useState<boolean>(false);
 
 	const selectPage = (pageId: string | null): void => {
-		if (!pageId) {
-			setSelectedPage(null);
-			return;
-		}
-		setSelectedPage(findPageRecursively(pages, pageId));
+		setSelectedPage(pageId ? findPageRecursively(pages, pageId) : null);
 	};
 
 	const togglePageList = (pageId: string): void => {
@@ -119,18 +146,42 @@ const MainPage: FC = () => {
 		setEditMode((editMode) => !editMode);
 	};
 
-	const savePageBody = (body: string): void => {
+	const removePage = (): void => {
+		if (!selectedPage) return;
+		setPages((pages) => deletePageRecursively(pages, selectedPage.id));
+		selectPage(null);
+	};
+
+	const savePageBody = (body: string, title: string): void => {
 		if (!selectedPage) {
 			return;
 		}
 		setPages((pages) =>
-			updatePageBodyRecursively(pages, selectedPage.id, body)
+			updatePageBodyRecursively(pages, selectedPage.id, body, title)
 		);
 		toggleEditMode();
 	};
 
 	const toggleGlobalSettings = (): void => {
 		setShowGlobalSettings((show) => !show);
+	};
+
+	const createNewPage = (): void => {
+		if (editMode) return;
+		const newPage: TypePage = {
+			id: v4(),
+			create_date: new Date(),
+			edit_date: null,
+			icon: null,
+			title: "Пустая страница",
+			body: "",
+			pages: null,
+			opened: false,
+		};
+		setPages((pages) =>
+			createNewPageRecursively(pages, newPage, selectedPage?.id)
+		);
+		// selectPage(newPage.id);
 	};
 
 	const mainMenuProps: IMainMenu = {
@@ -144,23 +195,25 @@ const MainPage: FC = () => {
 		toggleEditMode,
 		savePageBody,
 		selectPage,
+		removePage,
 		page: selectedPage,
 		editMode,
 	};
 
 	useEffect(() => {
-		setPages(_debugPagesList);
-	}, []);
-
-	useEffect(() => {
 		viewerProps.page = selectedPage;
 	}, [selectedPage]);
+
+	useEffect(() => {
+		setPagesToLocalStorage(pages);
+	}, [pages]);
 
 	return (
 		<div className={s.container}>
 			<MainMenu
 				{...mainMenuProps}
 				toggleGlobalSettings={toggleGlobalSettings}
+				createNewPage={createNewPage}
 			/>
 			<Viewer {...viewerProps} />
 

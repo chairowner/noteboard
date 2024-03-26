@@ -6,6 +6,10 @@ import classNames from "classnames";
 import { TypeMainMenuInfoItem } from "@/types/TypeMainMenuInfoItem";
 import { IMainMenu } from "@/interfaces/IMainMenu";
 
+const printMenuTitlePage = (title: string, length: number = 15): string => {
+	return title.length > length ? title.substring(0, length) + "..." : title;
+};
+
 export const MainMenu: FC<IMainMenu> = ({
 	user,
 	pages,
@@ -13,6 +17,7 @@ export const MainMenu: FC<IMainMenu> = ({
 	selectPage,
 	togglePageList,
 	toggleGlobalSettings,
+	createNewPage,
 }) => {
 	let render: JSX.Element = null;
 	let render_userBlock: JSX.Element = null;
@@ -29,6 +34,7 @@ export const MainMenu: FC<IMainMenu> = ({
 		{
 			id: 1,
 			icon: "[+]",
+			onClick: createNewPage,
 			title: "Новая страница",
 		},
 	];
@@ -54,7 +60,7 @@ export const MainMenu: FC<IMainMenu> = ({
 		const getPages = (pages: TypePage[]): JSX.Element => {
 			return (
 				<>
-					{pages.map((item) => {
+					{pages.map((item, index) => {
 						const selected: boolean =
 							selectedPage && item.id === selectedPage?.id;
 
@@ -89,7 +95,9 @@ export const MainMenu: FC<IMainMenu> = ({
 
 									{item?.icon ? <div>{item?.icon}</div> : null}
 
-									<div>{item.title}</div>
+									<div className={s.menuPageTitle}>
+										{printMenuTitlePage(item.title)}
+									</div>
 								</div>
 
 								<div className={cns(insidePagesItemClasses)}>

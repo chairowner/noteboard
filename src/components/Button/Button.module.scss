@@ -1,9 +1,7 @@
 .button {
 	position: relative;
 	min-height: 40px;
-	// padding: 5px 14px 5px 14px;
 	padding: 7px 18px 11px 18px;
-	// margin: 2px 4px 6px 4px;
 	font-size: 14px;
 	font-weight: 600;
 	background-color: var(--primary);
@@ -33,24 +31,26 @@
 	}
 
 	&:not(:disabled) {
-		&:hover {
-			background-color: var(--accent);
-			color: var(--primary);
+		// &:hover {
+		// 	background-color: var(--accent);
+		// 	color: var(--primary);
 
-			.button__border {
-				border-color: rgba(var(--primary), 0.3);
-			}
-		}
+		// 	.button__border {
+		// 		border-color: rgba(var(--primary), 0.3);
+		// 	}
+		// }
 
 		&:active {
 			transform: scale(1, 0.96) perspective(100px) rotateX(10deg);
 			transform-origin: bottom;
-			background-color: rgba(var(--accent), 0.85);
-			color: var(--primary);
+			// // background-color: rgba(var(--accent), 0.85);
+			// background-color: var(--accent);
+			// color: var(--primary);
 
 			.button__border {
-				border-color: rgba(var(--primary), 0.2);
-				border-width: 1px 3px 5px 3px;
+				// border-color: rgba(var(--primary), 0.2);
+				// border-color: var(--primary);
+				border-width: 1px 3px 4px 3px;
 			}
 		}
 	}

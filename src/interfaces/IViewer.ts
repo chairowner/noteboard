@@ -5,5 +5,7 @@ export interface IViewer {
 	selectPage?(pageId: string | null): void;
 	editMode: boolean;
 	toggleEditMode?(): void;
-	savePageBody?(body: string): void;
+	removePage?(): void;
+	savePageBody?(body: string, title: string): void;
+	showTitle?: boolean;
 }

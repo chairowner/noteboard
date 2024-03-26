@@ -8,4 +8,5 @@ export interface IMainMenu {
 	selectPage(pageId: string): void;
 	togglePageList(pageId: string): void;
 	toggleGlobalSettings?(): void;
+	createNewPage?(): void;
 }

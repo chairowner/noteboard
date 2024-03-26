@@ -21,6 +21,7 @@ export const View: FC<IViewerView> = ({
 	removeUseEffect,
 	editMode,
 	toggleEditMode,
+	showTitle = true,
 }) => {
 	if (!page) {
 		return null;
@@ -61,6 +62,7 @@ export const View: FC<IViewerView> = ({
 			className={cns(s.wrapper, className ?? null)}
 			onScroll={onScroll ? (e) => onScroll(e.target) : null}
 		>
+			{showTitle ? <h1>{page.title}</h1> : null}
 			<Markdown
 				children={page.body}
 				remarkPlugins={[remarkGfm]}

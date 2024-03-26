@@ -19,9 +19,9 @@ $main_list_item_height: 34px;
 	cursor: default;
 	height: 100vh;
 	overflow-y: auto;
-	min-width: 240px;
+	width: 240px;
 	padding: 10px 24px 10px 10px;
-	background-color: var(--primary50);
+	background-color: var(--primary);
 	font-size: 14px;
 	color: var(--accent);
 	gap: 20px;
@@ -87,6 +87,11 @@ $main_list_item_height: 34px;
 			background: transparent;
 			transition: background-color 100ms ease-in;
 			border-radius: var(--main_border_radius);
+
+			.menuPageTitle {
+				white-space: wrap;
+				text-overflow: ellipsis;
+			}
 
 			&:active,
 			&:hover,

@@ -4,9 +4,11 @@ import { View } from "../View/View";
 import s from "./Edit.module.scss";
 import { TypePage } from "@/types/TypePage";
 import { IViewerView } from "@/interfaces/IViewerView";
+import classNames from "classnames";
 
 interface IEdit extends IViewer {
 	changeEditBody(body: string): void;
+	changeEditTitle(title: string): void;
 	onSaveHandler(): void;
 }
 
@@ -14,6 +16,7 @@ export const Edit: FC<IEdit> = ({
 	page,
 	editMode,
 	changeEditBody,
+	changeEditTitle,
 	onSaveHandler,
 	toggleEditMode,
 }) => {
@@ -21,13 +24,16 @@ export const Edit: FC<IEdit> = ({
 		return null;
 	}
 
-	const [editPage, setEditPage] = useState<TypePage>(null);
+	const [editPage, setEditPage] = useState<TypePage>(page);
 
 	const onChangeTextarea = (body: string): void => {
-		setEditPage((page) => {
-			return { ...page, body };
-		});
+		setEditPage((page) => ({ ...page, body }));
 		changeEditBody(body);
+	};
+
+	const onChangeTitle = (title: string): void => {
+		setEditPage((page) => ({ ...page, title }));
+		changeEditTitle(title);
 	};
 
 	const onScroll = (e: EventTarget): void => {
@@ -79,13 +85,21 @@ export const Edit: FC<IEdit> = ({
 
 	return (
 		<div className={s.container}>
-			<textarea
-				className={s.item}
-				value={editPage?.body || ""}
-				onScroll={(e) => onScroll(e.target)}
-				onChange={(e) => onChangeTextarea(e.target.value)}
+			<input
+				className={classNames(s.input, s.title, s.bold)}
+				type="text"
+				value={editPage.title}
+				onChange={(e) => onChangeTitle(e.target.value)}
 			/>
-			<View {...viewProps} removeUseEffect={true} />
+			<div className={s.blocks}>
+				<textarea
+					className={s.item}
+					value={editPage?.body || ""}
+					onScroll={(e) => onScroll(e.target)}
+					onChange={(e) => onChangeTextarea(e.target.value)}
+				/>
+				<View {...viewProps} removeUseEffect={true} showTitle={false} />
+			</div>
 		</div>
 	);
 };

@@ -9,16 +9,21 @@ export const Viewer: FC<IViewer> = (props) => {
 	const [render, setRender] = useState<JSX.Element>(null);
 
 	let editBody: string = null;
+	let editTitle: string = null;
 
 	const onSaveHandler = (): void => {
 		if (!props.editMode) {
 			return;
 		}
-		props.savePageBody(editBody);
+		props.savePageBody(editBody, editTitle);
 	};
 
 	const changeEditBody = (body: string): void => {
 		editBody = body;
+	};
+
+	const changeEditTitle = (title: string): void => {
+		editTitle = title;
 	};
 
 	const RenderButtonsBlock: FC = () => (
@@ -29,7 +34,12 @@ export const Viewer: FC<IViewer> = (props) => {
 					<Button onClick={() => props.toggleEditMode()}>Отмена</Button>
 				</>
 			) : (
-				<Button onClick={() => props.toggleEditMode()}>Редактировать</Button>
+				<>
+					<Button onClick={() => props.toggleEditMode()}>Редактировать</Button>
+					<Button onDoubleClick={() => props.removePage()} title="doubleClick">
+						Удалить
+					</Button>
+				</>
 			)}
 		</div>
 	);
@@ -40,6 +50,7 @@ export const Viewer: FC<IViewer> = (props) => {
 				<Edit
 					{...props}
 					changeEditBody={changeEditBody}
+					changeEditTitle={changeEditTitle}
 					onSaveHandler={onSaveHandler}
 				/>
 			) : (

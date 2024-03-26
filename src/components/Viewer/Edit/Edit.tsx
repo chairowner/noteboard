@@ -57,6 +57,7 @@ export const Edit: FC<IEdit> = ({
 	useEffect(() => {
 		setEditPage(page);
 		changeEditBody(page.body);
+		changeEditTitle(page.title);
 	}, [page]);
 
 	useEffect(() => {

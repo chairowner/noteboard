@@ -7,6 +7,7 @@ import { TypeMainMenuInfoItem } from "@/types/TypeMainMenuInfoItem";
 import { IMainMenu } from "@/interfaces/IMainMenu";
 
 const printMenuTitlePage = (title: string, length: number = 15): string => {
+	if (!title) return "";
 	return title.length > length ? title.substring(0, length) + "..." : title;
 };
 

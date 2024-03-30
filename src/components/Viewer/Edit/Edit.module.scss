@@ -36,6 +36,11 @@
 			background-color: var(--light_background);
 			color: var(--accent);
 
+			&.alone {
+				border-radius: 1rem !important;
+				width: 100%;
+			}
+
 			&:is(textarea) {
 				border-right: none;
 				outline: none;
@@ -51,4 +56,7 @@
 			}
 		}
 	}
+}
+
+@media (max-width: 768px) {
 }

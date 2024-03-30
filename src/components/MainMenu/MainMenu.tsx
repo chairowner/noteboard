@@ -1,10 +1,11 @@
 import { TypePage } from "@/types/TypePage";
-import { FC, MouseEvent } from "react";
+import { FC, MouseEvent, useEffect } from "react";
 import s from "./MainMenu.module.scss";
 import cns from "classnames";
 import classNames from "classnames";
 import { TypeMainMenuInfoItem } from "@/types/TypeMainMenuInfoItem";
 import { IMainMenu } from "@/interfaces/IMainMenu";
+import { useWindowState } from "@/contexts/WindowState/WindowState.context";
 
 const printMenuTitlePage = (title: string, length: number = 15): string => {
 	if (!title) return "";
@@ -19,12 +20,16 @@ export const MainMenu: FC<IMainMenu> = ({
 	togglePageList,
 	toggleGlobalSettings,
 	createNewPage,
+	mainMenuOpened,
+	toggleMainMenu,
 }) => {
 	let render: JSX.Element = null;
 	let render_userBlock: JSX.Element = null;
 	let render_pages: JSX.Element = null;
 	let render_pagesBlock: JSX.Element = null;
 	let render_infoBlock: JSX.Element = null;
+
+	const { isMobile } = useWindowState();
 
 	const mainMenuInfoList: TypeMainMenuInfoItem[] = [
 		{
@@ -39,6 +44,12 @@ export const MainMenu: FC<IMainMenu> = ({
 			title: "Новая страница",
 		},
 	];
+
+	useEffect(() => {
+		if (!isMobile && mainMenuOpened) {
+			toggleMainMenu();
+		}
+	}, [isMobile]);
 
 	if (typeof user !== "undefined") {
 		render_userBlock = (
@@ -61,7 +72,7 @@ export const MainMenu: FC<IMainMenu> = ({
 		const getPages = (pages: TypePage[]): JSX.Element => {
 			return (
 				<>
-					{pages.map((item, index) => {
+					{pages.map((item) => {
 						const selected: boolean =
 							selectedPage && item.id === selectedPage?.id;
 
@@ -138,11 +149,20 @@ export const MainMenu: FC<IMainMenu> = ({
 	);
 
 	render = (
-		// <div className={cns(s.container, s.list)} style={style ? style : null}>
-		<div className={cns(s.container, s.list)}>
-			{render_userBlock}
-			{render_infoBlock}
-			{render_pagesBlock}
+		<div
+			className={cns(
+				s.wrapper,
+				isMobile ? (mainMenuOpened ? s.opened : null) : null
+			)}
+		>
+			<div className={cns(s.container, s.list)}>
+				{render_userBlock}
+				{render_infoBlock}
+				{render_pagesBlock}
+			</div>
+			<div className={s.toggleButton__wrapper}>
+				<button onClick={() => toggleMainMenu()} className={s.toggleButton} />
+			</div>
 		</div>
 	);
 

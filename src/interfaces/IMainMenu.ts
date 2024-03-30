@@ -1,5 +1,4 @@
 import { TypePage } from "@/types/TypePage";
-import { CSSProperties } from "react";
 
 export interface IMainMenu {
 	user?: string;
@@ -7,6 +6,8 @@ export interface IMainMenu {
 	pages: TypePage[];
 	selectPage(pageId: string): void;
 	togglePageList(pageId: string): void;
+	mainMenuOpened: boolean;
+	toggleMainMenu(): void;
 	toggleGlobalSettings?(): void;
 	createNewPage?(): void;
 }

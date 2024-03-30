@@ -133,6 +133,11 @@ const MainPage: FC = () => {
 	const [selectedPage, setSelectedPage] = useState<TypePage>(null);
 	const [editMode, setEditMode] = useState<boolean>(false);
 	const [showGlobalSettings, setShowGlobalSettings] = useState<boolean>(false);
+	const [mainMenuOpened, setMainMenuOpened] = useState(false);
+
+	const toggleMainMenu = () => {
+		setMainMenuOpened((status) => !status);
+	};
 
 	const selectPage = (pageId: string | null): void => {
 		setSelectedPage(pageId ? findPageRecursively(pages, pageId) : null);
@@ -189,6 +194,10 @@ const MainPage: FC = () => {
 		selectPage,
 		togglePageList,
 		pages,
+		toggleGlobalSettings,
+		createNewPage,
+		mainMenuOpened,
+		toggleMainMenu,
 	};
 
 	const viewerProps: IViewer = {
@@ -198,6 +207,8 @@ const MainPage: FC = () => {
 		removePage,
 		page: selectedPage,
 		editMode,
+		mainMenuOpened,
+		toggleMainMenu,
 	};
 
 	useEffect(() => {
@@ -210,12 +221,8 @@ const MainPage: FC = () => {
 
 	return (
 		<div className={s.container}>
-			<MainMenu
-				{...mainMenuProps}
-				toggleGlobalSettings={toggleGlobalSettings}
-				createNewPage={createNewPage}
-			/>
 			<Viewer {...viewerProps} />
+			<MainMenu {...mainMenuProps} />
 
 			{showGlobalSettings ? (
 				<SettingsModalWindow

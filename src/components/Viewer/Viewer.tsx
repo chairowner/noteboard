@@ -4,8 +4,10 @@ import s from "./Viewer.module.scss";
 import { View } from "./View/View";
 import { Edit } from "./Edit/Edit";
 import { Button } from "../Button/Button";
+import { useWindowState } from "@/contexts/WindowState/WindowState.context";
 
 export const Viewer: FC<IViewer> = (props) => {
+	const { isMobile } = useWindowState();
 	const [render, setRender] = useState<JSX.Element>(null);
 
 	let editBody: string = null;
@@ -74,5 +76,45 @@ export const Viewer: FC<IViewer> = (props) => {
 		);
 	}, [props?.page, props.editMode]);
 
-	return <div className={s.container}>{render}</div>;
+	const MobileHeader: FC = () => {
+		return (
+			<header className={s.header}>
+				<button
+					className={s.toggleButton}
+					onClick={() => props?.toggleMainMenu()}
+				>
+					<svg
+						width="20px"
+						height="20px"
+						viewBox="0"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M4 6H20M4 12H14M4 18H9"
+							stroke="var(--accent)"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+				</button>
+			</header>
+		);
+	};
+
+	return (
+		<div className={s.mainWrapper}>
+			{isMobile ? <MobileHeader /> : null}
+			<div className={s.container}>
+				{render ? (
+					render
+				) : (
+					<div className={s.applicationName__wrapper}>
+						<b className={s.applicationName}>Noteboard</b>
+					</div>
+				)}
+			</div>
+		</div>
+	);
 };

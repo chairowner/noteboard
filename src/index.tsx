@@ -8,6 +8,7 @@ import "./styles/normalize.scss";
 import "./index.scss";
 import { LoadingPage } from "./pages/LoadingPage/LoadingPage";
 import { ThemeProvider } from "./contexts/Theme/Theme.context";
+import { WindowStateProvider } from "./contexts/WindowState/WindowState.context";
 
 const root: HTMLElement = document.getElementById("root");
 
@@ -44,9 +45,11 @@ const router = createBrowserRouter([
 
 container.render(
 	<StrictMode>
-		<ThemeProvider>
-			{/* <WelcomePage /> */}
-			<RouterProvider router={router} />
-		</ThemeProvider>
+		<WindowStateProvider>
+			<ThemeProvider>
+				{/* <WelcomePage /> */}
+				<RouterProvider router={router} />
+			</ThemeProvider>
+		</WindowStateProvider>
 	</StrictMode>
 );

@@ -50,4 +50,4 @@ export const ThemeProvider: FC<any> = ({ children }) => {
 	);
 };
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = (): ThemeContextProps => useContext(ThemeContext);

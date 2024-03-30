@@ -5,6 +5,7 @@ import s from "./Edit.module.scss";
 import { TypePage } from "@/types/TypePage";
 import { IViewerView } from "@/interfaces/IViewerView";
 import classNames from "classnames";
+import { useWindowState } from "@/contexts/WindowState/WindowState.context";
 
 interface IEdit extends IViewer {
 	changeEditBody(body: string): void;
@@ -25,6 +26,7 @@ export const Edit: FC<IEdit> = ({
 	}
 
 	const [editPage, setEditPage] = useState<TypePage>(page);
+	const { isMobile } = useWindowState();
 
 	const onChangeTextarea = (body: string): void => {
 		setEditPage((page) => ({ ...page, body }));
@@ -45,6 +47,8 @@ export const Edit: FC<IEdit> = ({
 		page: editPage,
 		onScroll,
 		editMode,
+		removeUseEffect: true,
+		showTitle: false,
 	};
 
 	const turnOffEditMode = (): void => {
@@ -94,12 +98,12 @@ export const Edit: FC<IEdit> = ({
 			/>
 			<div className={s.blocks}>
 				<textarea
-					className={s.item}
+					className={classNames(s.item, { [s.alone]: isMobile })}
 					value={editPage?.body || ""}
 					onScroll={(e) => onScroll(e.target)}
 					onChange={(e) => onChangeTextarea(e.target.value)}
 				/>
-				<View {...viewProps} removeUseEffect={true} showTitle={false} />
+				{isMobile ? null : <View {...viewProps} />}
 			</div>
 		</div>
 	);
